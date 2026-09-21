@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#520819">
+<title>Лестница финансовой зрелости — Ольга Фатеева</title>
+<style>
+:root{
+  --bordo:#520819;
+  --ink:#4A1F26;
+  --cream:#F4F1EA;
+  --paper:#FBFAF8;
+  --gold:#C9A15E;
+  --rule:rgba(82,8,25,.15);
+  --muted:rgba(74,31,38,.60);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --cream:#241014;
+    --paper:#2C1519;
+    --ink:#F1E6E2;
+    --rule:rgba(241,230,226,.15);
+    --muted:rgba(241,230,226,.60);
+  }
+}
+:root[data-theme="dark"]{
+  --cream:#241014;
+  --paper:#2C1519;
+  --ink:#F1E6E2;
+  --rule:rgba(241,230,226,.15);
+  --muted:rgba(241,230,226,.60);
+}
+html{-webkit-text-size-adjust:100%; scroll-padding-top:env(safe-area-inset-top,0px);}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--cream);
+  color:var(--ink);
+  font-family:Arial,Helvetica,sans-serif;
+  line-height:1.55;
+  padding:32px 20px 64px;
+  min-height:100vh;
+}
+.wrap{max-width:960px;margin:0 auto}
+
+/* ---------- typography ---------- */
+.eyebrow{
+  font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);font-weight:700;
+}
+h1{
+  font-size:clamp(30px,6vw,52px);
+  line-height:1.06;letter-spacing:-.02em;font-weight:700;
+  color:var(--bordo);margin:14px 0 0;
+}
+.lede{font-size:clamp(15px,2.2vw,18px);color:var(--muted);margin-top:18px;max-width:52ch}
+.rule{height:1px;background:var(--rule);border:0;margin:28px 0}
+
+/* ---------- layout ---------- */
+.stage{display:grid;grid-template-columns:132px 1fr;gap:40px;align-items:start}
+@media(max-width:720px){
+  .stage{grid-template-columns:1fr;gap:22px}
+}
+
+/* ---------- ladder (signature) ---------- */
+.ladder{position:sticky;top:32px}
+@media(max-width:720px){.ladder{position:static}}
+.ladder-inner{display:flex;flex-direction:column-reverse;gap:0}
+.rung{
+  position:relative;display:flex;align-items:center;gap:10px;
+  height:52px;
+}
+@media(max-width:720px){
+  .ladder-inner{flex-direction:row;gap:0;justify-content:space-between}
+  .rung{height:auto;flex-direction:column;gap:6px;flex:1}
+}
+.rung-line{
+  flex:1;height:2px;background:var(--rule);
+  transition:background .5s ease;
+}
+@media(max-width:720px){.rung-line{width:100%;flex:none}}
+.rung-num{
+  font-size:13px;font-weight:700;color:var(--rule);
+  width:16px;text-align:right;
+  transition:color .5s ease;
+}
+@media(max-width:720px){.rung-num{width:auto;order:2;color:rgba(74,31,38,.28)}}
+.rung.reached .rung-line{background:var(--bordo)}
+.rung.reached .rung-num{color:var(--bordo)}
+.rung.current .rung-line{background:var(--gold);height:4px}
+.rung.current .rung-num{color:var(--gold);font-size:16px}
+.ladder-cap{
+  font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:12px;
+}
+@media(max-width:720px){.ladder-cap{margin-bottom:8px}}
+
+/* ---------- panel ---------- */
+.panel{
+  background:var(--paper);
+  border:1px solid var(--rule);
+  padding:clamp(22px,4vw,38px);
+}
+.step-meta{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.q{font-size:clamp(19px,3vw,25px);line-height:1.3;font-weight:700;color:var(--bordo);margin:14px 0 6px}
+.q-note{font-size:14px;color:var(--muted);margin-bottom:22px}
+
+.opt{
+  display:block;width:100%;text-align:left;
+  background:transparent;border:1px solid var(--rule);
+  padding:16px 18px;margin-bottom:10px;cursor:pointer;
+  font-family:inherit;font-size:16px;color:var(--ink);
+  transition:border-color .18s ease,background .18s ease,transform .18s ease;
+}
+.opt:hover{border-color:var(--bordo);background:rgba(82,8,25,.03)}
+.opt:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.opt strong{display:block;font-weight:700;color:var(--bordo)}
+.opt span{display:block;font-size:13.5px;color:var(--muted);margin-top:3px}
+
+.btn{
+  display:inline-block;background:var(--bordo);color:var(--cream);
+  border:0;padding:15px 30px;font-family:inherit;font-size:16px;
+  font-weight:700;cursor:pointer;letter-spacing:.01em;
+  transition:background .18s ease;
+}
+.btn:hover{background:#3d0613}
+.btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.btn-ghost{
+  background:transparent;color:var(--bordo);border:1px solid var(--rule);
+  padding:13px 24px;font-size:14px;font-weight:400;
+}
+.btn-ghost:hover{background:rgba(82,8,25,.04)}
+
+.back{
+  background:none;border:0;color:var(--muted);font-family:inherit;
+  font-size:13px;cursor:pointer;padding:8px 0;margin-top:8px;
+}
+.back:hover{color:var(--bordo)}
+
+/* ---------- result ---------- */
+.res-num{
+  font-size:clamp(72px,16vw,132px);line-height:.82;font-weight:700;
+  color:var(--gold);letter-spacing:-.04em;
+}
+.res-name{
+  font-size:clamp(24px,4.5vw,36px);line-height:1.12;font-weight:700;
+  color:var(--bordo);margin-top:10px;letter-spacing:-.01em;
+}
+.res-body{font-size:16.5px;margin-top:20px;max-width:56ch}
+.res-block{margin-top:24px;padding-top:20px;border-top:1px solid var(--rule)}
+.res-label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.res-block p{margin-top:8px;font-size:16px}
+.mind{font-style:italic;color:var(--muted)}
+
+.wall{
+  margin-top:30px;padding:26px;
+  background:var(--bordo);color:var(--cream);
+}
+.wall p{font-size:16px;margin-bottom:14px}
+.wall p:last-of-type{margin-bottom:20px}
+.wall strong{color:var(--gold)}
+.wall .btn{background:var(--gold);color:var(--bordo)}
+.wall .btn:hover{background:#d9b478}
+.wall .date{
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);font-weight:700;margin-bottom:10px;
+}
+.wall-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.wall .btn-ghost{
+  background:transparent;color:var(--cream);
+  border:1px solid rgba(244,241,234,.45);
+  padding:13px 24px;font-size:14px;font-weight:400;
+}
+.wall .btn-ghost:hover{background:rgba(244,241,234,.10)}
+.wall .note{font-size:13.5px;color:rgba(244,241,234,.7);margin-top:16px;margin-bottom:0}
+
+.foot{margin-top:40px;font-size:13px;color:var(--muted);text-align:center}
+.foot a{color:var(--bordo)}
+
+.fade{animation:fade .38s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- INTRO -->
+  <section id="intro">
+    <p class="eyebrow">Самопроверка · 7 вопросов</p>
+    <h1>Лестница<br>финансовой зрелости</h1>
+    <p class="lede">Мы привыкли оценивать себя по сумме на счету. Это плохая линейка — она ничего не говорит о том, что делать дальше.</p>
+    <p class="lede">Есть линейка полезнее: какими решениями вы умеете управлять. Шесть уровней — от нулевого до управления капиталом. Ответьте честно и увидите свою ступень.</p>
+    <hr class="rule">
+    <button class="btn" onclick="start()">Найти свою ступень</button>
+    <p class="foot" style="text-align:left;margin-top:18px">Занимает около двух минут. Ответы никуда не отправляются.</p>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz" hidden>
+    <div class="stage">
+      <div class="ladder">
+        <p class="ladder-cap">Ступени</p>
+        <div class="ladder-inner" id="ladder"></div>
+      </div>
+      <div class="panel">
+        <p class="step-meta" id="meta"></p>
+        <h2 class="q" id="qtext"></h2>
+        <p class="q-note" id="qnote"></p>
+        <div id="opts"></div>
+        <button class="back" id="back" onclick="back()">← Назад</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="result" hidden>
+    <div class="stage">
+      <div class="ladder">
+        <p class="ladder-cap">Ваша ступень</p>
+        <div class="ladder-inner" id="ladder2"></div>
+      </div>
+      <div class="panel" id="rescard"></div>
+    </div>
+    <p class="foot">
+      Ольга Фатеева · <a href="https://olgafatteeva.ru">olgafatteeva.ru</a><br>
+      Материал носит образовательный характер и не является индивидуальной инвестиционной рекомендацией.
+    </p>
+  </section>
+
+</div>
+
+<script>
+const TG_GROUP = "https://t.me/+dU30g9UF8Z03YzYy";
+const TG_DIRECT = "https://t.me/olga_investing";
+
+const LEVELS = [
+  {n:0,name:"Две воронки",
+   body:"Есть дорогой долг, учёта нет, деньги приходят и уходят. Здесь задача не одна, а две одновременно: гасить долг — и параллельно закручивать встречную воронку накоплений. Хоть со 100 ₽. Это не про проценты.",
+   hold:"Пока нет резерва, любая внеплановая трата снова уходит на карту — и долговая воронка не закрывается никогда.",
+   mind:"Я одновременно и выхожу, и строю."},
+  {n:1,name:"Порядок и защита",
+   body:"Учёт есть. Подушка на 3–6 месяцев. Карты, кэшбэки, накопительные счета, вклады. Просрочек нет. Фундамент собран — и это больше, чем у большинства.",
+   hold:"Деньги защищены, но не растут. Инфляция работает против вас каждый день, пока вы стоите на месте.",
+   mind:"Деньги — это про контроль."},
+  {n:2,name:"Первый капитал",
+   body:"Брокерский счёт, ИИС, налоговые вычеты. Облигации, фонды денежного рынка, золото. Деньги начали работать — впервые не только вы.",
+   hold:"Риск путается с потерей, и волатильность обходится стороной. Из-за этого доходность остаётся ниже той, что нужна вашим целям.",
+   mind:"Деньги могут работать без меня."},
+  {n:3,name:"Проба риска",
+   body:"Появились акции и фонды акций. Шаг сделан — но решения пока приходят извне: по совету, по новости, по настроению.",
+   hold:"Результат случаен, и удачу невозможно отличить от компетентности. Хороший год ничего не доказывает, плохой — ничему не учит.",
+   mind:"Я пробую."},
+  {n:4,name:"Стратегия",
+   body:"Распределение по классам активов под конкретный горизонт. Правила ребалансировки. Налоговая оптимизация. Просадку вы проходите, не выходя из плана.",
+   hold:"Это первый уровень, где результат становится воспроизводимым. Дальше растёт не доходность, а управляемость.",
+   mind:"Решения по правилам, а не по эмоциям."},
+  {n:5,name:"Управление капиталом",
+   body:"Несколько источников дохода. Управление уже не только активами, но сроками и ликвидностью. Валютная диверсификация. Налоговое планирование.",
+   hold:"Ошибка на этом уровне видна не сразу. Неверно выбранный срок или недооценённая ликвидность проявятся тогда, когда деньги понадобятся, — через три года, через пять. Отыграть их быстро уже нельзя. Поэтому решения здесь сверяют с внешним взглядом, а не только с собственным опытом.",
+   mind:"Я управляю системой, а не отдельными решениями."}
+];
+
+const Q = [
+  {t:"Есть ли у вас дорогой долг?",
+   n:"Кредитная карта с процентами, потребительский кредит, микрозаём, рассрочка. Ипотеку сюда не относим.",
+   o:[["Да","Хотя бы один такой долг есть"],["Нет","Дорогих долгов нет"]]},
+  {t:"Есть ли резерв на 3–6 месяцев жизни?",
+   n:"Деньги, до которых можно дотянуться в любой момент, отложенные отдельно от текущих трат.",
+   o:[["Да, полностью","Хватит на 3 месяца и больше"],["Частично","Что-то отложено, но до трёх месяцев не дотягивает"],["Нет","Отдельного резерва нет"]]},
+  {t:"Есть ли у вас брокерский счёт с консервативными инструментами?",
+   n:"Облигации, фонды денежного рынка, золото, ИИС с оформленными вычетами.",
+   o:[["Да","Счёт открыт, такие инструменты куплены"],["Нет","Либо счёта нет, либо он пустой"]]},
+  {t:"Есть ли в портфеле акции или фонды акций?",
+   n:"Любые долевые инструменты — отдельные бумаги или индексные фонды.",
+   o:[["Да","Есть"],["Нет","Пока нет"]]},
+  {t:"Как принимаются решения по этим вложениям?",
+   n:"Честно — как это происходит на практике, а не как хотелось бы.",
+   o:[["По заранее заданным правилам","Есть распределение и порядок действий, которого я держусь"],["По ситуации","По совету, по новости, по ощущению момента"]]},
+  {t:"Есть ли распределение по классам активов под конкретный срок?",
+   n:"Записанные доли по классам активов, горизонт цели и правила ребалансировки.",
+   o:[["Да","И я к нему возвращаюсь регулярно"],["Нет","В голове есть общее представление, но не в виде правил"]]},
+  {t:"Управляете ли вы сроками, ликвидностью и валютой?",
+   n:"Несколько источников дохода, валютная диверсификация, налоговое планирование, управление сроками денег.",
+   o:[["Да","Это часть моих регулярных решений"],["Нет","Пока управляю в основном активами"]]}
+];
+
+let i = 0, a = [];
+
+function buildLadder(el, cur){
+  el.innerHTML = "";
+  for(let n=0;n<6;n++){
+    const d = document.createElement("div");
+    d.className = "rung" + (cur!==null && n<cur ? " reached" : "") + (cur===n ? " current" : "");
+    d.innerHTML = '<span class="rung-num">'+n+'</span><span class="rung-line"></span>';
+    el.appendChild(d);
+  }
+}
+
+function start(){
+  document.getElementById("intro").hidden = true;
+  document.getElementById("quiz").hidden = false;
+  i=0; a=[]; render();
+}
+
+function render(){
+  buildLadder(document.getElementById("ladder"), null);
+  const q = Q[i];
+  document.getElementById("meta").textContent = "Вопрос "+(i+1)+" из "+Q.length;
+  document.getElementById("qtext").textContent = q.t;
+  document.getElementById("qnote").textContent = q.n;
+  const box = document.getElementById("opts");
+  box.innerHTML = "";
+  q.o.forEach((o,idx)=>{
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.innerHTML = "<strong>"+o[0]+"</strong><span>"+o[1]+"</span>";
+    b.onclick = ()=>answer(idx);
+    box.appendChild(b);
+  });
+  document.getElementById("back").style.display = i===0 ? "none" : "block";
+  document.querySelector("#quiz .panel").classList.remove("fade");
+  void document.querySelector("#quiz .panel").offsetWidth;
+  document.querySelector("#quiz .panel").classList.add("fade");
+}
+
+function answer(idx){
+  a[i] = idx;
+  // пропускаем вопросы, которые не имеют смысла при данном ответе
+  if(i===3 && idx===1){ a[4]=null; a[5]=null; a[6]=null; return finish(); }
+  if(i===2 && idx===1){ a[3]=null; a[4]=null; a[5]=null; a[6]=null; return finish(); }
+  i++;
+  if(i>=Q.length) return finish();
+  render();
+}
+
+function back(){
+  if(i>0){ i--; render(); }
+}
+
+function calc(){
+  const debt = a[0]===0;
+  const res  = a[1];            // 0 полностью, 1 частично, 2 нет
+  const bro  = a[2]===0;
+  const eq   = a[3]===0;
+  const rule = a[4]===0;
+  const allo = a[5]===0;
+  const cap  = a[6]===0;
+
+  if(debt && res===2) return 0;
+  if(cap && allo) return 5;
+  if(allo && eq)  return 4;
+  if(eq)          return 3;
+  if(bro)         return 2;
+  if(res===0 && !debt) return 1;
+  return 0;
+}
+
+function finish(){
+  const lv = calc();
+  const L = LEVELS[lv];
+  document.getElementById("quiz").hidden = true;
+  const r = document.getElementById("result");
+  r.hidden = false;
+  buildLadder(document.getElementById("ladder2"), lv);
+  const dmLink = TG_DIRECT + "?text=" + encodeURIComponent("РАЗБОР. Моя ступень " + lv);
+  document.getElementById("rescard").innerHTML =
+    '<p class="step-meta">Ваша ступень</p>'+
+    '<div class="res-num">'+L.n+'</div>'+
+    '<h2 class="res-name">'+L.name+'</h2>'+
+    '<p class="res-body">'+L.body+'</p>'+
+    '<div class="res-block"><p class="res-label">'+(lv===5?"Что важно":"Что держит")+'</p><p>'+L.hold+'</p></div>'+
+    '<div class="res-block"><p class="res-label">Мышление этого уровня</p><p class="mind">'+L.mind+'</p></div>'+
+    '<div class="wall">'+
+      '<p class="date">Открытый эфир · 25 сентября, 10:00 мск</p>'+
+      '<p>Ступень показывает, <strong>где вы стоите</strong>. Она не показывает, <strong>как идти дальше именно вам</strong>.</p>'+
+      '<p>В пятницу я провожу бесплатный эфир <strong>«Как вы теряете свои деньги»</strong>: программа долгосрочных сбережений, банковские продукты под ваши траты и ИИС, с которым можно успеть до конца года. Разберу, где теряет деньги человек на каждой ступени.</p>'+
+      '<p>Ссылку на эфир и запись я присылаю только в группу.</p>'+
+      '<div class="wall-actions">'+
+        '<a class="btn" href="'+TG_GROUP+'" target="_blank" rel="noopener">Забрать ссылку на эфир</a>'+
+        '<a class="btn btn-ghost" href="'+dmLink+'" target="_blank" rel="noopener">Написать РАЗБОР</a>'+
+      '</div>'+
+      '<p class="note">РАЗБОР — короткая личная встреча: посмотрим вашу ситуацию и решим, что даёт ближайший рост.</p>'+
+    '</div>'+
+    '<div style="margin-top:22px"><button class="btn btn-ghost" onclick="again()">Пройти заново</button></div>';
+  window.scrollTo({top:0,behavior:'smooth'});
+  document.getElementById("rescard").classList.add("fade");
+}
+
+function again(){
+  document.getElementById("result").hidden = true;
+  document.getElementById("intro").hidden = false;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
